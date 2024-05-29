@@ -146,13 +146,6 @@
 
         Telegram.WebApp.setHeaderColor('secondary_bg_color');
 
-        setViewportData();
-        Telegram.WebApp.onEvent('viewportChanged', setViewportData);
-
-        Telegram.WebApp.onEvent('themeChanged', function() {
-            document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
-        });
-
         var isEventSupported = (function(){
         var TAGNAMES = {
             'select':'input','change':'input',
@@ -173,7 +166,12 @@
         return isEventSupported;
         })();
 
-        Telegram.WebApp.showAlert(isEventSupported("haschange"));
+        setViewportData();
+        Telegram.WebApp.onEvent('viewportChanged', Telegram.WebApp.showAlert(isEventSupported("haschange")));
+
+        Telegram.WebApp.onEvent('themeChanged', function() {
+            document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
+        });
     
     </script>
 
