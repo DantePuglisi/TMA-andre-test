@@ -92,7 +92,6 @@
     <div id="viewport-params-size"></div>
     <div id="viewport-params-expand"></div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/shake.js@1.2.2/shake.min.js"></script>
     <script>
         // Init TWA
         Telegram.WebApp.ready();
@@ -154,22 +153,27 @@
             document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
         });
 
-        // Shake detection using Shake.js
-        var myShakeEvent = new Shake()/*({
-            threshold: 15, // optional shake strength threshold
-            timeout: 1000 // optional, determines the frequency of event generation
-        });*/
+        var isEventSupported = (function(){
+        var TAGNAMES = {
+            'select':'input','change':'input',
+            'submit':'form','reset':'form',
+            'error':'img','load':'img','abort':'img'
+        }
+        function isEventSupported(eventName) {
+            var el = document.createElement(TAGNAMES[eventName] || 'div');
+            eventName = 'on' + eventName;
+            var isSupported = (eventName in el);
+            if (!isSupported) {
+            el.setAttribute(eventName, 'return;');
+            isSupported = typeof el[eventName] == 'function';
+            }
+            el = null;
+            return isSupported;
+        }
+        return isEventSupported;
+        })();
 
-        // Start listening to device motion
-        myShakeEvent.start();
-
-        window.addEventListener('shake', function() {
-            Telegram.WebApp.showAlert('Device was shaken!');
-        }, false);
-
-        window.addEventListener('devicemotion', function(event) {
-            myShakeEvent.devicemotion(event);
-        }, false);
+        Telegram.WebApp.showAlert(isEventSupported("haschange"));
     
     </script>
 
