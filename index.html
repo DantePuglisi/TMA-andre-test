@@ -167,7 +167,7 @@
         })();
 
         setViewportData();
-        Telegram.WebApp.onEvent('viewportChanged', Telegram.WebApp.showAlert(isEventSupported("haschange")));
+        Telegram.WebApp.onEvent('viewportChanged', Telegram.WebApp.showAlert(isEventSupported("devicemotion")));
 
         Telegram.WebApp.onEvent('themeChanged', function() {
             document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
